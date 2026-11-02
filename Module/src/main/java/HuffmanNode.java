@@ -30,8 +30,11 @@ public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode
      * with the smaller ASCII value comes first.
      */
     public static boolean comesBefore(HuffmanNode a, HuffmanNode b) {
-        // TODO: implement
-        return false;
+        if (a.freq == b.freq) {
+            return a.charAscii < b.charAscii;
+        } else {
+            return a.freq < b.freq;
+        }
     }
 
     /**
