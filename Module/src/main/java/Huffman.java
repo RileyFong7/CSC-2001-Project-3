@@ -39,35 +39,6 @@ public class Huffman {
     }
 
     /**
-     * Adds node to collection, preserving whatever ordering your chosen
-     * implementation of collection relies on to make the minimum element
-     * easy to find.
-     *
-     * You choose what kind of Collection to pass in when you call this
-     * from createHuffTree(). For example, an ArrayList kept sorted by
-     * HuffmanNode.comesBefore() as you insert (an "ordered list"), or a
-     * PriorityQueue. How you implement this method depends on which you pick.
-     */
-    public static void addNode(Collection<HuffmanNode> collection, HuffmanNode node) {
-        // TODO: implement
-    }
-
-    /**
-     * Removes and returns the smallest HuffmanNode in collection, using
-     * HuffmanNode.comesBefore() (or compareTo(), which relies on it) to
-     * determine "smallest". Returns null if collection is empty.
-     *
-     * This must work for ANY Collection passed in -- not just the one you
-     * use inside createHuffTree(). For example, if you back createHuffTree()
-     * with a PriorityQueue, poll() it; for any other collection, find the
-     * minimum node and remove it.
-     */
-    public static HuffmanNode removeMin(Collection<HuffmanNode> collection) {
-        // TODO: implement
-        return null;
-    }
-
-    /**
      * Builds a Huffman tree from an array of character frequencies (as
      * produced by cntFreq()) and returns the root HuffmanNode of the tree.
      *
@@ -83,24 +54,24 @@ public class Huffman {
      *    one unique character), return a single leaf HuffmanNode for that
      *    character (no combine() call needed).
      */
-    public static HuffmanNode createHuffTree(int[] freq) {
-        Collection<HuffmanNode> collection = new ArrayList<HuffmanNode>();
+    public static HuffmanTree createHuffTree(int[] freq) {
+        PQueue collection = PQueue.empty_queue();
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
-                // collection = addNode(collection, new HuffmanNode(i, freq[i], null, null)); // change depending on how addNode is implemented
+                collection.enqueue(new HuffmanLeaf((char) freq[i], i)); // change depending on how addNode is implemented
             }
         }
 
-        if (collection.size() == 0) {
+        if (collection.count() == 0) {
             return null;
-        } else if (collection.size() == 1) {
-            return removeMin(collection);
+        } else if (collection.count() == 1) {
+            return collection.dequeue();
         } else {
-            while (collection.size() > 1) {
-                addNode(collection, HuffmanNode.combine(removeMin(collection), removeMin(collection)));
+            while (collection.count() > 1) {
+                collection.enqueue(collection.dequeue().combine(collection.dequeue()));
             }
-            return removeMin(collection);
+            return collection.dequeue();
         }
     }
 
@@ -116,7 +87,7 @@ public class Huffman {
      * left/right branch to build a code out of; huffmanEncode/huffmanDecode
      * handle that case entirely through the header.
      */
-    public static String[] createCode(HuffmanNode root) {
+    public static String[] createCode(HuffmanTree root) {
         String[] codes = new String[NUM_CHARS];
         Arrays.fill(codes, "");
         LeafPath paths = getLeafPaths(root, "");
@@ -131,13 +102,15 @@ public class Huffman {
      *  - an ascii character value
      *  - its path from root to leaf
      */
-    private static LeafPath getLeafPaths(HuffmanNode root, String path) {
-        if (root.isLeaf()) {
-            return new LeafPath(root.charAscii(), path, null);
-        } else {
-            LeafPath paths = getLeafPaths(root.left(), path + "0"); // get all paths for left
-            paths = LeafPath.append(paths, getLeafPaths(root.right(), path + "1")); // get all paths for right
+    private static LeafPath getLeafPaths(HuffmanTree root, String path) {
+        if (root instanceof HuffmanLeaf r) {
+            return new LeafPath(r.charASCII(), path, null);
+        } else if (root instanceof HuffmanNode r){
+            LeafPath paths = getLeafPaths(r.left(), path + "0"); // get all paths for left
+            paths = LeafPath.append(paths, getLeafPaths(r.right(), path + "1")); // get all paths for right
             return paths;
+        } else {
+            return null;
         }
     }
 
@@ -206,23 +179,13 @@ public class Huffman {
     static void main() {
         HuffmanNode myNode = new HuffmanNode(32, 13,
                 new HuffmanNode(32, 6,
-                        new HuffmanNode(32, 3,
-                                null,
-                                null),
-                        new HuffmanNode(98, 3,
-                                null,
-                                null)),
+                        new HuffmanLeaf((char) 32, 3),
+                        new HuffmanLeaf((char) 98, 3)),
                 new HuffmanNode(97, 7,
                         new HuffmanNode(99, 3,
-                                new HuffmanNode(100, 1,
-                                        null,
-                                        null),
-                                new HuffmanNode(99, 2,
-                                        null,
-                                        null)),
-                        new HuffmanNode(97, 4,
-                                null,
-                                null)));
+                                new HuffmanLeaf((char) 100, 1),
+                                new HuffmanLeaf((char) 99, 2)),
+                        new HuffmanLeaf((char) 97, 4)));
         String[] b = createCode(myNode);
         String a = "";
         for (int i = 0; i < b.length; i++) {

@@ -1,18 +1,18 @@
 public class PQueue implements HQueue{
-    HuffmanNode[] heap;
+    HuffmanTree[] heap;
     int size;
-    public PQueue(HuffmanNode[] heap, int size){
+    public PQueue(HuffmanTree[] heap, int size){
         this.heap = heap;
         this.size = size;
     }
-    public void enqueue(HuffmanNode h){
+    public void enqueue(HuffmanTree h){
         heap[size] = h;
         siftup(size);
         size += 1;
     }
     public HuffmanTree dequeue(){
         int index = 0;
-        HuffmanNode dead = heap[0];
+        HuffmanTree dead = heap[0];
         if (size <= 0){
             throw new IllegalArgumentException("empty dequeue");
         }
@@ -27,12 +27,12 @@ public class PQueue implements HQueue{
             }
         }
         size -= 1;
-        return (HuffmanTree) dead;
+        return dead;
     }
     public static PQueue empty_queue(){
-        return new PQueue(new HuffmanNode[7], 0);
+        return new PQueue(new HuffmanTree[7], 0);
     }
-    public HuffmanNode peek(){
+    public HuffmanTree peek(){
         if (heap[0] != null){
             return heap[0];
         }else{
@@ -40,7 +40,7 @@ public class PQueue implements HQueue{
         }
 
     }
-    public int size(){
+    public int count(){
         return this.size;
     }
     public boolean isEmpty(){
@@ -53,7 +53,7 @@ public class PQueue implements HQueue{
         }
     }
     public void swap(int index1, int index2){
-        HuffmanNode temp = heap[index1];
+        HuffmanTree temp = heap[index1];
         heap[index1] = heap[index2];
         heap[index2] = temp;
     }

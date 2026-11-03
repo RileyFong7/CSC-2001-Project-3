@@ -21,6 +21,8 @@ public interface HuffmanTree extends Comparable<HuffmanTree> {
      */
     public HuffmanTree combine(HuffmanTree other);
 
+    /** returns the frequency of the root of the tree */
+    public int freq();
     /**
      * Natural ordering consistent with comesBefore(), so that HuffmanNode
      * objects can be stored directly in a sorted structure (e.g. a

@@ -1,4 +1,4 @@
-public record HuffmanLeaf (int freq, char charASCII) implements HuffmanTree{
+public record HuffmanLeaf (char charASCII, int freq) implements HuffmanTree{
 
     @Override
     public boolean comesBefore(HuffmanTree other) {
