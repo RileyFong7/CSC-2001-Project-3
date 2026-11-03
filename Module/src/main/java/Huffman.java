@@ -84,8 +84,24 @@ public class Huffman {
      *    character (no combine() call needed).
      */
     public static HuffmanNode createHuffTree(int[] freq) {
-        // TODO: implement
-        return null;
+        Collection<HuffmanNode> collection = new ArrayList<HuffmanNode>();
+
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] != 0) {
+                // collection = addNode(collection, new HuffmanNode(i, freq[i], null, null)); // change depending on how addNode is implemented
+            }
+        }
+
+        if (collection.size() == 0) {
+            return null;
+        } else if (collection.size() == 1) {
+            return removeMin(collection);
+        } else {
+            while (collection.size() > 1) {
+                addNode(collection, HuffmanNode.combine(removeMin(collection), removeMin(collection)));
+            }
+            return removeMin(collection);
+        }
     }
 
     /**
@@ -103,8 +119,26 @@ public class Huffman {
     public static String[] createCode(HuffmanNode root) {
         String[] codes = new String[NUM_CHARS];
         Arrays.fill(codes, "");
-        // TODO: implement
+        LeafPath paths = getLeafPaths(root, "");
+            while (paths != null) {
+                codes[paths.value()] = paths.path();
+                paths = paths.rest();
+            }
         return codes;
+    }
+
+    /** given a huffman tree and an empty string, return a linked list of leafpaths, which each contain:
+     *  - an ascii character value
+     *  - its path from root to leaf
+     */
+    private static LeafPath getLeafPaths(HuffmanNode root, String path) {
+        if (root.isLeaf()) {
+            return new LeafPath(root.charAscii(), path, null);
+        } else {
+            LeafPath paths = getLeafPaths(root.left(), path + "0"); // get all paths for left
+            paths = LeafPath.append(paths, getLeafPaths(root.right(), path + "1")); // get all paths for right
+            return paths;
+        }
     }
 
     /**
@@ -167,5 +201,35 @@ public class Huffman {
      */
     public static void huffmanDecode(String encodedFile, String decodeFile) throws IOException {
         // TODO: implement
+    }
+
+    static void main() {
+        HuffmanNode myNode = new HuffmanNode(32, 13,
+                new HuffmanNode(32, 6,
+                        new HuffmanNode(32, 3,
+                                null,
+                                null),
+                        new HuffmanNode(98, 3,
+                                null,
+                                null)),
+                new HuffmanNode(97, 7,
+                        new HuffmanNode(99, 3,
+                                new HuffmanNode(100, 1,
+                                        null,
+                                        null),
+                                new HuffmanNode(99, 2,
+                                        null,
+                                        null)),
+                        new HuffmanNode(97, 4,
+                                null,
+                                null)));
+        String[] b = createCode(myNode);
+        String a = "";
+        for (int i = 0; i < b.length; i++) {
+            if (!b[i].isEmpty()) {
+                a += (char) i + ": " + b[i] + ", ";
+            }
+        }
+        IO.println(a);
     }
 }

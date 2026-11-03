@@ -14,6 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * These tests assume the test files are in the same directory as HuffmanTest.java
  */
 public class HuffmanTest {
+    @Test
+    public void createCodeTest1() {
+
+    }
 
     @Test
     public void testCntFreq() throws IOException {
