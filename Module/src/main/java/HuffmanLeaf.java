@@ -2,19 +2,37 @@ public record HuffmanLeaf (int freq, char charASCII) implements HuffmanTree{
 
     @Override
     public boolean comesBefore(HuffmanTree other) {
-        // unimplemented...
-        return false;
+        switch (other) {
+            case HuffmanNode o:
+                if (this.freq == o.freq()) {
+                    return this.charASCII < o.charAscii();
+                } else {
+                    return this.freq < o.freq();
+                }
+            case HuffmanLeaf o:
+                if (this.freq == o.freq) {
+                    return this.charASCII < o.charASCII;
+                } else {
+                    return this.freq < o.freq;
+                }
+            default:
+                throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
+        }
     }
 
     @Override
     public HuffmanTree combine(HuffmanTree other) {
-        // unimplemented...
-        return this;
+        return switch (other) {
+            case HuffmanNode o -> new HuffmanNode(this.charASCII, this.freq + o.freq(), this, o);
+            case HuffmanLeaf o -> new HuffmanNode(o.charASCII(), this.freq + o.freq(), o, this);
+            default -> throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
+        };
     }
 
     @Override
     public int compareTo(HuffmanTree other) {
-        // unimplemented ...
+        if (this.comesBefore(other)) return -1;
+        if (other.comesBefore(this)) return 1;
         return 0;
     }
 }

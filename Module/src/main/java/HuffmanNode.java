@@ -9,7 +9,7 @@
  * right() accessor methods automatically, along with
  * equals()/hashCode()/toString(). Do not rename the components below.
  */
-public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode right)
+public record HuffmanNode(int charAscii, int freq, HuffmanTree left, HuffmanTree right)
         implements HuffmanTree {
 
     /** Convenience constructor for a leaf node (no children). */
@@ -29,11 +29,22 @@ public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode
      * Ties are broken using the ASCII value of the character: the node
      * with the smaller ASCII value comes first.
      */
-    public boolean comesBefore(HuffmanNode other) {
-        if (this.freq == other.freq) {
-            return this.charAscii < other.charAscii;
-        } else {
-            return this.freq < other.freq;
+    public boolean comesBefore(HuffmanTree other) {
+        switch (other) {
+            case HuffmanNode o:
+                if (this.freq == o.freq) {
+                    return this.charAscii < o.charAscii;
+                } else {
+                    return this.freq < o.freq;
+                }
+            case HuffmanLeaf o:
+                if (this.freq == o.freq()) {
+                    return this.charAscii < o.charASCII();
+                } else {
+                    return this.freq < o.freq();
+                }
+            default:
+                throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
         }
     }
 
@@ -46,12 +57,12 @@ public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode
      * and b's frequencies. The new node's charAscii value is the smaller
      * of a's and b's charAscii values (used to break ties later on).
      */
-    public static HuffmanNode combine(HuffmanNode a, HuffmanNode b) {
-        if(comesBefore(a,b)){
-            return new HuffmanNode(a.charAscii, a.freq+b.freq, a, b);
-        }else {
-            return new HuffmanNode(b.charAscii, a.freq+b.freq, b, a);
-        }
+    public HuffmanNode combine(HuffmanTree other) {
+        return switch (other) {
+            case HuffmanNode o -> new HuffmanNode(this.charAscii, this.freq + o.freq, this, o);
+            case HuffmanLeaf o -> new HuffmanNode(o.charASCII(), this.freq + o.freq(), o, this);
+            default -> throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
+        };
     }
 
     /**
@@ -60,9 +71,9 @@ public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode
      * PriorityQueue or a sorted List) while building the tree.
      */
     @Override
-    public int compareTo(HuffmanNode other) {
-        if (comesBefore(this, other)) return -1;
-        if (comesBefore(other, this)) return 1;
+    public int compareTo(HuffmanTree other) {
+        if (this.comesBefore(other)) return -1;
+        if (other.comesBefore(this)) return 1;
         return 0;
     }
 }
