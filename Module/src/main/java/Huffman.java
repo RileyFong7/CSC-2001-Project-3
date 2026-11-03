@@ -32,10 +32,21 @@ public class Huffman {
      * Returns an int array of size NUM_CHARS, indexed by ASCII value, with
      * the count of each character (0 for characters that do not occur).
      */
-    public static int[] cntFreq(String filename) throws IOException {
+    public static int[] cntFreq(String filename) {
         int[] freq = new int[NUM_CHARS];
-        // TODO: implement
-        return freq;
+        try (BufferedReader r = new BufferedReader(new FileReader(filename))) {
+            String line;
+            line = r.readLine();
+            while (line != null) {
+                for (int i = 0; i < line.length(); i++) {
+                    freq[line.charAt(i)] += 1;
+                }
+                line = r.readLine();
+            }
+            return freq;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -59,7 +70,7 @@ public class Huffman {
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
-                collection.enqueue(new HuffmanLeaf((char) freq[i], i)); // change depending on how addNode is implemented
+                collection.enqueue(new HuffmanLeaf(i, (char) freq[i])); // change depending on how addNode is implemented
             }
         }
 
@@ -123,8 +134,16 @@ public class Huffman {
      * Example: for the text "aaabbbbcc" this returns "97 3 98 4 99 2".
      */
     public static String createHeader(int[] freq) {
-        // TODO: implement
-        return "";
+        String header = "";
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] != 0) {
+                if (!header.isEmpty()) {
+                    header += " ";
+                }
+                header += i + " " + freq[i];
+            }
+        }
+        return header;
     }
 
     /**
@@ -141,7 +160,22 @@ public class Huffman {
      *    header line (e.g. "97 5") and nothing else - no second line of code bits.
      */
     public static void huffmanEncode(String inFile, String outFile) throws IOException {
-        // TODO: implement
+        int[] freq = cntFreq(inFile);
+        String[] code = createCode(createHuffTree(freq));
+        try (BufferedReader r = new BufferedReader(new FileReader(inFile))) {
+            String line;
+            line = r.readLine();
+            try (BufferedWriter w = new BufferedWriter(new FileWriter(outFile))) {
+                w.write(createHeader(freq));
+                w.newLine();
+                while (line != null) {
+                    for (int i = 0; i < line.length(); i++) {
+                        w.write(code[line.charAt(i)]);
+                    }
+                    line = r.readLine();
+                }
+            }
+        }
     }
 
     /**
@@ -176,16 +210,16 @@ public class Huffman {
         // TODO: implement
     }
 
-    static void main() {
+    static void main() throws IOException {
         HuffmanNode myNode = new HuffmanNode(32, 13,
                 new HuffmanNode(32, 6,
-                        new HuffmanLeaf((char) 32, 3),
-                        new HuffmanLeaf((char) 98, 3)),
+                        new HuffmanLeaf(3, (char) 32),
+                        new HuffmanLeaf(3, (char) 98)),
                 new HuffmanNode(97, 7,
                         new HuffmanNode(99, 3,
-                                new HuffmanLeaf((char) 100, 1),
-                                new HuffmanLeaf((char) 99, 2)),
-                        new HuffmanLeaf((char) 97, 4)));
+                                new HuffmanLeaf(1, (char) 100),
+                                new HuffmanLeaf(2, (char) 99)),
+                        new HuffmanLeaf(4, (char) 97)));
         String[] b = createCode(myNode);
         String a = "";
         for (int i = 0; i < b.length; i++) {
@@ -194,5 +228,15 @@ public class Huffman {
             }
         }
         IO.println(a);
+
+
+        int[] c = cntFreq("a.txt");
+        for (int i = 97; i < 104; i++) {
+            IO.println(c[i]);
+        }
+
+
+        IO.println(createHeader(c));
+        huffmanEncode("a.txt", "anew.txt");
     }
 }

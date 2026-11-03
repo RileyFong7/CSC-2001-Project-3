@@ -1,4 +1,5 @@
 public record LeafPath(int value, String path, LeafPath rest) {
+    /** takes two LeafPaths and returns both of them appended together */
     public static LeafPath append(LeafPath a, LeafPath b) {
         switch (a) {
             case null:
