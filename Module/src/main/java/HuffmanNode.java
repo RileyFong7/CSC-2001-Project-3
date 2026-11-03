@@ -57,12 +57,33 @@ public record HuffmanNode(int charAscii, int freq, HuffmanTree left, HuffmanTree
      * and b's frequencies. The new node's charAscii value is the smaller
      * of a's and b's charAscii values (used to break ties later on).
      */
-    public HuffmanNode combine(HuffmanTree other) {
-        return switch (other) {
-            case HuffmanNode o -> new HuffmanNode(this.charAscii, this.freq + o.freq, this, o);
-            case HuffmanLeaf o -> new HuffmanNode(o.charASCII(), this.freq + o.freq(), o, this);
-            default -> throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
-        };
+    @Override
+    public HuffmanTree combine(HuffmanTree other) {
+        int freqSum = this.freq + other.freq();
+        char lowestChar;
+        switch (other) {
+            case HuffmanNode o:
+                if (this.charAscii < o.charAscii()) {
+                    lowestChar = (char) this.charAscii;
+                } else {
+                    lowestChar = (char) o.charAscii;
+                }
+                break;
+            case HuffmanLeaf o:
+                if (this.charAscii < o.charASCII()) {
+                    lowestChar = (char) this.charAscii;
+                } else {
+                    lowestChar = o.charASCII();
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
+        }
+        if (this.comesBefore(other)) {
+            return new HuffmanNode(lowestChar, freqSum, this, other);
+        } else {
+            return new HuffmanNode(lowestChar, freqSum, other, this);
+        }
     }
 
     /**

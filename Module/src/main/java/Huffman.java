@@ -70,7 +70,7 @@ public class Huffman {
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
-                collection.enqueue(new HuffmanLeaf(i, (char) freq[i])); // change depending on how addNode is implemented
+                collection.enqueue(new HuffmanLeaf(freq[i], (char) i)); // change depending on how addNode is implemented
             }
         }
 
@@ -80,7 +80,9 @@ public class Huffman {
             return collection.dequeue();
         } else {
             while (collection.count() > 1) {
-                collection.enqueue(collection.dequeue().combine(collection.dequeue()));
+                HuffmanTree t1 = collection.dequeue();
+                HuffmanTree t2 = collection.dequeue();
+                collection.enqueue(t1.combine(t2));
             }
             return collection.dequeue();
         }
@@ -167,8 +169,8 @@ public class Huffman {
             line = r.readLine();
             try (BufferedWriter w = new BufferedWriter(new FileWriter(outFile))) {
                 w.write(createHeader(freq));
-                w.newLine();
                 while (line != null) {
+                    w.newLine();
                     for (int i = 0; i < line.length(); i++) {
                         w.write(code[line.charAt(i)]);
                     }
@@ -235,7 +237,7 @@ public class Huffman {
             IO.println(c[i]);
         }
 
-
+        IO.println(createHuffTree(c));
         IO.println(createHeader(c));
         huffmanEncode("a.txt", "anew.txt");
     }

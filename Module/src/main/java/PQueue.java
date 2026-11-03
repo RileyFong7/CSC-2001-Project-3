@@ -6,9 +6,19 @@ public class PQueue implements HQueue{
         this.size = size;
     }
     public void enqueue(HuffmanTree h){
+        if (size == heap.length) {
+            newArray();
+        }
         heap[size] = h;
         siftup(size);
         size += 1;
+    }
+    private void newArray() {
+        HuffmanTree[] newArray = new HuffmanTree[size * 2];
+        for (int i = 0; i < size; i++) {
+            newArray[i] = this.heap[i];
+        }
+        this.heap = newArray;
     }
     public HuffmanTree dequeue(){
         int index = 0;
@@ -16,17 +26,19 @@ public class PQueue implements HQueue{
         if (size <= 0){
             throw new IllegalArgumentException("empty dequeue");
         }
-        while (index < size){
-            if(heap[(index*2)+1].freq() < heap[(index*2)+2].freq()){
-                heap[index] = heap[(index*2)+1];
-                index = index*2+1;
+        swap(0, size - 1);
+        while (((index*2)+2) < size) {
+            if(heap[(index*2)].comesBefore(heap[(index*2)+1])){
+                swap(index, (index*2));
+                index = index*2 + 1;
             }
             else{
-                heap[index] = heap[(index*2)+2];
-                index = index*2+2;
+                swap(index, (index*2)+1);
+                index = index*2+1;
             }
         }
-        size -= 1;
+        heap[size - 1] = null;
+        size--;
         return dead;
     }
     public static PQueue empty_queue(){
@@ -47,9 +59,9 @@ public class PQueue implements HQueue{
         return size == 0;
     }
     public void siftup(int index){
-        if (heap[(index-1)/2].freq() > heap[index].freq()){
-            swap(index, (index-1)/2);
-            siftup((index-1)/2);
+        if (heap[index].comesBefore(heap[(index)/2])){
+            swap(index, (index)/2);
+            siftup((index)/2);
         }
     }
     public void swap(int index1, int index2){

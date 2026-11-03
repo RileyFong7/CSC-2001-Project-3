@@ -22,11 +22,31 @@ public record HuffmanLeaf (int freq, char charASCII) implements HuffmanTree{
 
     @Override
     public HuffmanTree combine(HuffmanTree other) {
-        return switch (other) {
-            case HuffmanNode o -> new HuffmanNode(this.charASCII, this.freq + o.freq(), this, o);
-            case HuffmanLeaf o -> new HuffmanNode(o.charASCII(), this.freq + o.freq(), o, this);
-            default -> throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
-        };
+        int freqSum = this.freq + other.freq();
+        char lowestChar;
+        switch (other) {
+            case HuffmanNode o:
+                if (this.charASCII < o.charAscii()) {
+                    lowestChar = this.charASCII;
+                } else {
+                    lowestChar = (char) o.charAscii();
+                }
+                break;
+            case HuffmanLeaf o:
+                if (this.charASCII < o.charASCII) {
+                    lowestChar = this.charASCII;
+                } else {
+                    lowestChar = o.charASCII;
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("input must be a HuffmanNode or a HuffmanLeaf");
+        }
+        if (this.comesBefore(other)) {
+            return new HuffmanNode(lowestChar, freqSum, this, other);
+        } else {
+            return new HuffmanNode(lowestChar, freqSum, other, this);
+        }
     }
 
     @Override
