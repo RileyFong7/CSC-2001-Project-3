@@ -1,4 +1,4 @@
-public class PQueue {
+public class PQueue implements HQueue{
     HuffmanNode[] heap;
     int size;
     public PQueue(HuffmanNode[] heap, int size){
@@ -10,7 +10,7 @@ public class PQueue {
         siftup(size);
         size += 1;
     }
-    public HuffmanNode dequeue(){
+    public HuffmanTree dequeue(){
         int index = 0;
         HuffmanNode dead = heap[0];
         if (size <= 0){
