@@ -10,7 +10,7 @@
  * equals()/hashCode()/toString(). Do not rename the components below.
  */
 public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode right)
-        implements Comparable<HuffmanNode> {
+        implements HuffmanTree {
 
     /** Convenience constructor for a leaf node (no children). */
     public HuffmanNode(int charAscii, int freq) {
@@ -29,11 +29,11 @@ public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode
      * Ties are broken using the ASCII value of the character: the node
      * with the smaller ASCII value comes first.
      */
-    public static boolean comesBefore(HuffmanNode a, HuffmanNode b) {
-        if (a.freq == b.freq) {
-            return a.charAscii < b.charAscii;
+    public boolean comesBefore(HuffmanNode other) {
+        if (this.freq == other.freq) {
+            return this.charAscii < other.charAscii;
         } else {
-            return a.freq < b.freq;
+            return this.freq < other.freq;
         }
     }
 

@@ -27,7 +27,7 @@ public class PQueue implements HQueue{
             }
         }
         size -= 1;
-        return dead;
+        return (HuffmanTree) dead;
     }
     public static PQueue empty_queue(){
         return new PQueue(new HuffmanNode[7], 0);
