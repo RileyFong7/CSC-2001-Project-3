@@ -170,15 +170,12 @@ public class Huffman {
             line = r.readLine();
             try (BufferedWriter w = new BufferedWriter(new FileWriter(outFile))) {
                 w.write(createHeader(freq));
-                w.newLine();
                 while (line != null) {
+                    w.newLine();
                     for (int i = 0; i < line.length(); i++) {
                         w.write(code[line.charAt(i)]);
                     }
                     line = r.readLine();
-                    if (line != null) {
-                        w.write((char) 10);
-                    }
                 }
             }
         }
