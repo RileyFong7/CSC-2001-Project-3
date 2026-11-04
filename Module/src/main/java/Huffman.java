@@ -111,7 +111,7 @@ public class Huffman {
         return codes;
     }
 
-    /** given a huffman tree and an empty string, return a linked list of leafpaths, which each contain:
+    /** given a huffman tree and a path represented by a string, return a linked list of leafpaths, which each contain:
      *  - an ascii character value
      *  - its path from root to leaf
      */
