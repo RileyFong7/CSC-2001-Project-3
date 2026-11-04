@@ -39,7 +39,7 @@ public class Huffman {
             line = r.readLine();
             while (line != null) {
                 for (int i = 0; i < line.length(); i++) {
-                    freq[line.charAt(i)] += 1;
+                    freq[line.charAt(i)]++;
                 }
                 line = r.readLine();
             }
