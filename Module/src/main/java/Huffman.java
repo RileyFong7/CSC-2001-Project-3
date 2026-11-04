@@ -169,12 +169,15 @@ public class Huffman {
             line = r.readLine();
             try (BufferedWriter w = new BufferedWriter(new FileWriter(outFile))) {
                 w.write(createHeader(freq));
+                w.newLine();
                 while (line != null) {
-                    w.newLine();
                     for (int i = 0; i < line.length(); i++) {
                         w.write(code[line.charAt(i)]);
                     }
                     line = r.readLine();
+                    if (line != null) {
+                        w.write((char) 10);
+                    }
                 }
             }
         }
@@ -189,7 +192,14 @@ public class Huffman {
      */
     public static int[] parseHeader(String headerString) {
         int[] freq = new int[NUM_CHARS];
-        // TODO: implement
+        String[] parsedString = headerString.split(" ");
+        if (parsedString.length % 2 != 0) {
+            throw new IllegalArgumentException("header must have even amounts of numbers");
+        }
+
+        for (int i = 0; i < parsedString.length; i += 2) {
+            freq[Integer.parseInt(parsedString[i])] = Integer.parseInt(parsedString[i + 1]);
+        }
         return freq;
     }
 
@@ -209,7 +219,46 @@ public class Huffman {
      * so write it out that many times directly.
      */
     public static void huffmanDecode(String encodedFile, String decodeFile) throws IOException {
-        // TODO: implement
+        try (BufferedReader r = new BufferedReader(new FileReader(encodedFile))) {
+            String header = r.readLine();
+            int[] freq = parseHeader(header);
+            HuffmanTree huffTree = createHuffTree(freq);
+            String encoded = r.readLine();
+            try (BufferedWriter w = new BufferedWriter(new FileWriter(decodeFile))) {
+                String[] split = header.split(" ");
+                if (split.length == 2) {
+                    for (int i = 0; i < Integer.parseInt(split[1]); i++) {
+                        w.write((char) Integer.parseInt(split[0]));
+                    }
+                    return;
+                }
+
+                HuffmanTree currentNode = huffTree;
+                if (currentNode instanceof HuffmanLeaf l) {
+                    w.write(l.charASCII());
+                    return;
+                }
+                while (encoded != null) {
+                    for (int i = 0; i < encoded.length(); i++) {
+                        if (currentNode instanceof HuffmanNode n) {
+                            if (encoded.charAt(i) == '0') {
+                                currentNode = n.left();
+                            } else {
+                                currentNode = n.right();
+                            }
+                        }
+                        if (currentNode instanceof HuffmanLeaf l) {
+                            w.write(l.charASCII());
+                            currentNode = huffTree;
+                        }
+                    }
+                    encoded = r.readLine();
+                    if (encoded != null) {
+                        w.newLine();
+                    }
+                }
+            }
+        }
     }
 
     static void main() throws IOException {
@@ -239,6 +288,8 @@ public class Huffman {
 
         IO.println(createHuffTree(c));
         IO.println(createHeader(c));
+        IO.println(createHeader(parseHeader(createHeader(c))));
         huffmanEncode("a.txt", "anew.txt");
+        huffmanDecode("anew.txt", "beemovie.txt");
     }
 }
