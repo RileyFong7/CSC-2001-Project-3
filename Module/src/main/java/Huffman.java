@@ -70,7 +70,7 @@ public class Huffman {
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
-                collection.enqueue(new HuffmanLeaf(freq[i], (char) i)); // change depending on how addNode is implemented
+                collection.enqueue(new HuffmanLeaf(freq[i], (char) i));
             }
         }
 
@@ -104,10 +104,10 @@ public class Huffman {
         String[] codes = new String[NUM_CHARS];
         Arrays.fill(codes, "");
         LeafPath paths = getLeafPaths(root, "");
-            while (paths != null) {
-                codes[paths.value()] = paths.path();
-                paths = paths.rest();
-            }
+        while (paths != null) {
+            codes[paths.value()] = paths.path();
+            paths = paths.rest();
+        }
         return codes;
     }
 
@@ -116,14 +116,15 @@ public class Huffman {
      *  - its path from root to leaf
      */
     private static LeafPath getLeafPaths(HuffmanTree root, String path) {
-        if (root instanceof HuffmanLeaf r) {
-            return new LeafPath(r.charASCII(), path, null);
-        } else if (root instanceof HuffmanNode r){
-            LeafPath paths = getLeafPaths(r.left(), path + "0"); // get all paths for left
-            paths = LeafPath.append(paths, getLeafPaths(r.right(), path + "1")); // get all paths for right
-            return paths;
-        } else {
-            return null;
+        switch (root) {
+            case HuffmanLeaf r:
+                return new LeafPath(r.charASCII(), path, null);
+            case HuffmanNode r:
+                LeafPath paths = getLeafPaths(r.left(), path + "0"); // get all paths for left
+                paths = LeafPath.append(paths, getLeafPaths(r.right(), path + "1")); // get all paths for right
+                return paths;
+            default:
+                return null;
         }
     }
 
