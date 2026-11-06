@@ -194,6 +194,7 @@ public class Huffman {
                     line = r.readLine();
                     if (line != null) {
                         w.write(code['\n']);
+                        IO.println("l");
                     }
                 }
             }
