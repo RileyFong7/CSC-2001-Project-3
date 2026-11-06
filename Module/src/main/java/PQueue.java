@@ -37,6 +37,7 @@ public class PQueue implements HQueue{
                 index = index*2+1;
             }
         }
+        //siftdown(0);
         heap[size - 1] = null;
         size--;
         return dead;
@@ -60,8 +61,17 @@ public class PQueue implements HQueue{
     }
     public void siftup(int index){
         if (heap[index].comesBefore(heap[(index)/2])){
-            swap(index, (index)/2);
-            siftup((index)/2);
+            swap(index, (index/2));
+            siftup(index/2);
+        }
+    }
+    public void siftdown(int index) {
+        if ((index * 2) + 1 < size - 1 && heap[(index * 2) + 1].comesBefore(heap[index])) {
+            swap(index, (index * 2) + 1);
+            siftdown((index * 2) + 1);
+        } else if ((index * 2) + 2 < size - 1 && heap[(index * 2) + 2].comesBefore(heap[index])) {
+            swap(index, (index * 2) + 2);
+            siftdown((index * 2) + 2);
         }
     }
     public void swap(int index1, int index2){

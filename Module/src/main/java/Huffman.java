@@ -42,6 +42,9 @@ public class Huffman {
                     freq[line.charAt(i)]++;
                 }
                 line = r.readLine();
+                if (line != null) {
+                    freq['\n']++;
+                }
             }
             return freq;
         } catch (IOException e) {
@@ -70,9 +73,22 @@ public class Huffman {
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
+                if (i == 10) {
+                    IO.println("g");
+                }
                 collection.enqueue(new HuffmanLeaf(freq[i], (char) i));
             }
         }
+        /*
+        IO.println("start");
+        while (true) {
+            IO.println(collection.dequeue());
+            if (collection.count() == -1) {
+                break;
+            }
+        }
+         */
+        IO.println("end");
 
         if (collection.count() == 0) {
             return null;
@@ -170,12 +186,15 @@ public class Huffman {
             line = r.readLine();
             try (BufferedWriter w = new BufferedWriter(new FileWriter(outFile))) {
                 w.write(createHeader(freq));
+                w.newLine();
                 while (line != null) {
-                    w.newLine();
                     for (int i = 0; i < line.length(); i++) {
                         w.write(code[line.charAt(i)]);
                     }
                     line = r.readLine();
+                    if (line != null) {
+                        w.write(code['\n']);
+                    }
                 }
             }
         }
@@ -246,7 +265,12 @@ public class Huffman {
                             }
                         }
                         if (currentNode instanceof HuffmanLeaf l) {
-                            w.write(l.charASCII());
+                            char character = l.charASCII();
+                            if (character == 10) {
+                                w.newLine();
+                            } else {
+                                w.write(l.charASCII());
+                            }
                             currentNode = huffTree;
                         }
                     }
