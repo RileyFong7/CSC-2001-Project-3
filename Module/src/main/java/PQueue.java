@@ -130,17 +130,17 @@ public class PQueue implements HQueue{
         example1.enqueue(new HuffmanNode( 1,  9, null, null));
 
         example1.enqueue(new HuffmanNode( 1,  8, null, null));
-//
-//        example1.enqueue(new HuffmanNode( 1,  14, null, null));
-//
-//        example1.enqueue(new HuffmanNode( 1,  6, null, null));
-//        example1.enqueue(new HuffmanNode( 1,  5, null, null));
-//
-//        example1.enqueue(new HuffmanNode( 1,  11, null, null));
-//
-//        example1.enqueue(new HuffmanNode( 1,  3, null, null));
-//
-//        example1.enqueue(new HuffmanNode( 1,  2, null, null));
+
+        example1.enqueue(new HuffmanNode( 1,  14, null, null));
+
+        example1.enqueue(new HuffmanNode( 1,  6, null, null));
+        example1.enqueue(new HuffmanNode( 1,  5, null, null));
+
+        example1.enqueue(new HuffmanNode( 1,  11, null, null));
+
+        example1.enqueue(new HuffmanNode( 1,  3, null, null));
+
+        example1.enqueue(new HuffmanNode( 1,  2, null, null));
 
         IO.println(example1.dequeue());
 
@@ -152,6 +152,16 @@ public class PQueue implements HQueue{
 
         IO.println(example1.dequeue());
 
+        IO.println(example1.dequeue());
+        IO.println(example1);
+        IO.println(example1.dequeue());
+        IO.println(example1);
+        IO.println(example1.dequeue());
+        IO.println(example1);
+        IO.println(example1.dequeue());
+        IO.println(example1);
+        IO.println(example1.dequeue());
+        IO.println(example1);
         IO.println(example1.dequeue());
         IO.println(example1);
         IO.println(example1.dequeue());
