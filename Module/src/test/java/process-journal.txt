@@ -1,2 +1,12 @@
 11/2/26
 Riley Fong 2:13 PM: finished the combine function
+11/4/26
+Luke Bravo 2PM: worked on createHeader and similar encoding functions
+11/4/26
+Riley Fong 2:24 PM: created a priority queue
+11/6/26
+Luke Bravo 2PM: worked on more encoding functions, like cntFreq and createHuffTree
+11/6/26
+Riley Fong 2:04 PM: bug tested the priority queue
+11/6/26
+Luke Bravo 3PM: finished the decoding functions
