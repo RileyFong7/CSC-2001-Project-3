@@ -32,7 +32,7 @@ public class Huffman {
      * Returns an int array of size NUM_CHARS, indexed by ASCII value, with
      * the count of each character (0 for characters that do not occur).
      */
-    public static int[] cntFreq(String filename) {
+    public static int[] cntFreq(String filename) throws FileNotFoundException {
         int[] freq = new int[NUM_CHARS];
         try (BufferedReader r = new BufferedReader(new FileReader(filename))) {
             String line;
@@ -48,7 +48,7 @@ public class Huffman {
             }
             return freq;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileNotFoundException("file not found");
         }
     }
 

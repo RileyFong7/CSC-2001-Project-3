@@ -10,3 +10,5 @@ Luke Bravo 2PM: worked on more encoding functions, like cntFreq and createHuffTr
 Riley Fong 2:04 PM: bug tested the priority queue
 11/6/26
 Luke Bravo 3PM: finished the decoding functions
+11/11/26
+Riley Fong 2:30 PM: debugged and fixed minor issues
