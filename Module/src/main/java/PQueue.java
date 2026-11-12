@@ -44,20 +44,7 @@ public class PQueue implements HQueue{
             } else {
                 break;
             }
-
-//            if(heap[(index*2)+1].comesBefore(heap[(index*2)+2])){
-//                if (heap[(index*2)+1].comesBefore(heap[index])) {
-//                    swap(index, (index*2) + 1);
-//                    index = (index*2)+1;
-//                }
-//            }else {
-//                if (heap[(index*2)+2].comesBefore(heap[index])) {
-//                    swap(index, (index*2) + 2);
-//                    index = (index*2)+2;
-//                }
-//            }
         }
-        //siftdown(0);
         heap[size - 1] = null;
         size--;
         return dead;
@@ -85,15 +72,7 @@ public class PQueue implements HQueue{
             siftup((index-1)/2);
         }
     }
-    public void siftdown(int index) {
-        if ((index * 2) + 1 < size - 1 && heap[(index * 2) + 1].comesBefore(heap[index])) {
-            swap(index, (index * 2) + 1);
-            siftdown((index * 2) + 1);
-        } else if ((index * 2) + 2 < size - 1 && heap[(index * 2) + 2].comesBefore(heap[index])) {
-            swap(index, (index * 2) + 2);
-            siftdown((index * 2) + 2);
-        }
-    }
+
     public void swap(int index1, int index2){
         HuffmanTree temp = heap[index1];
         heap[index1] = heap[index2];
@@ -102,82 +81,10 @@ public class PQueue implements HQueue{
 
     @Override
     public String toString() {
-//        IO.println(size);
         for (int i=0; i < size; i++){
             IO.print(heap[i].freq() + " - ");
         }
         return "";
     }
 
-    public static void main(){
-        PQueue example1 = empty_queue();
-        example1.enqueue(new HuffmanNode( 1,  4, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  10, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  16, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  15, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  1, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  13, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  12, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  7, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  9, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  8, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  14, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  6, null, null));
-        example1.enqueue(new HuffmanNode( 1,  5, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  11, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  3, null, null));
-
-        example1.enqueue(new HuffmanNode( 1,  2, null, null));
-
-        IO.println(example1.dequeue());
-
-        IO.println(example1.dequeue());
-
-        IO.println(example1.dequeue());
-
-        IO.println(example1.dequeue());
-
-        IO.println(example1.dequeue());
-
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-        IO.println(example1.dequeue());
-        IO.println(example1);
-
-
-
-
-
-
-
-    }
 }

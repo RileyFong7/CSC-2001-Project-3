@@ -73,22 +73,9 @@ public class Huffman {
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
-                if (i == 10) {
-                    IO.println("g");
-                }
                 collection.enqueue(new HuffmanLeaf(freq[i], (char) i));
             }
         }
-        /*
-        IO.println("start");
-        while (true) {
-            IO.println(collection.dequeue());
-            if (collection.count() == -1) {
-                break;
-            }
-        }
-         */
-        IO.println("end");
 
         if (collection.count() == 0) {
             return null;
@@ -194,7 +181,6 @@ public class Huffman {
                     line = r.readLine();
                     if (line != null) {
                         w.write(code['\n']);
-                        IO.println("l");
                     }
                 }
             }
@@ -282,37 +268,5 @@ public class Huffman {
                 }
             }
         }
-    }
-
-    static void main() throws IOException {
-        HuffmanNode myNode = new HuffmanNode(32, 13,
-                new HuffmanNode(32, 6,
-                        new HuffmanLeaf(3, (char) 32),
-                        new HuffmanLeaf(3, (char) 98)),
-                new HuffmanNode(97, 7,
-                        new HuffmanNode(99, 3,
-                                new HuffmanLeaf(1, (char) 100),
-                                new HuffmanLeaf(2, (char) 99)),
-                        new HuffmanLeaf(4, (char) 97)));
-        String[] b = createCode(myNode);
-        String a = "";
-        for (int i = 0; i < b.length; i++) {
-            if (!b[i].isEmpty()) {
-                a += (char) i + ": " + b[i] + ", ";
-            }
-        }
-        IO.println(a);
-
-
-        int[] c = cntFreq("a.txt");
-        for (int i = 97; i < 104; i++) {
-            IO.println(c[i]);
-        }
-
-        IO.println(createHuffTree(c));
-        IO.println(createHeader(c));
-        IO.println(createHeader(parseHeader(createHeader(c))));
-        huffmanEncode("a.txt", "anew.txt");
-        huffmanDecode("anew.txt", "beemovie.txt");
     }
 }
