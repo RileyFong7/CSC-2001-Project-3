@@ -73,22 +73,9 @@ public class Huffman {
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
-                if (i == 10) {
-                    IO.println("g");
-                }
                 collection.enqueue(new HuffmanLeaf(freq[i], (char) i));
             }
         }
-        /*
-        IO.println("start");
-        while (true) {
-            IO.println(collection.dequeue());
-            if (collection.count() == -1) {
-                break;
-            }
-        }
-         */
-        IO.println("end");
 
         if (collection.count() == 0) {
             return null;
@@ -194,7 +181,6 @@ public class Huffman {
                     line = r.readLine();
                     if (line != null) {
                         w.write(code['\n']);
-                        IO.println("l");
                     }
                 }
             }
@@ -282,9 +268,5 @@ public class Huffman {
                 }
             }
         }
-    }
-
-    static void main() throws IOException {
-
     }
 }
